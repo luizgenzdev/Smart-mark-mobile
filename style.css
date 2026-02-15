@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+  font-family: 'outlined';
+  src: url('./assets/fonts/MaterialIconsOutlined-Regular.otf') format('truetype');
+}
+@font-face {
+  font-family: 'normal';
+  src: url('./assets/fonts/MaterialIcons-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'round';
+  src: url('./assets/fonts/MaterialIconsRound-Regular.otf') format('truetype');
+}
+
+.mdi { font-family: 'normal'; font-weight: normal; font-style: normal; font-size: 24px; display: inline-block; line-height: 1; }
+.mdi-o { font-family: 'outlined'; font-weight: normal; font-style: normal; font-size: 24px; display: inline-block; line-height: 1; }
+.mdi-r { font-family: 'round'; font-weight: normal; font-style: normal; font-size: 24px; display: inline-block; line-height: 1; }
+
+.small-caps{
+  font-variant-caps: small-caps;
+}
+
+

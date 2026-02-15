@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartMark</title>
+
+  <!--<link href="./index.css" rel="stylesheet">-->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = { darkMode: "class" }
+  </script>
+  <style>
+    @keyframes v {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(220%); }
+    }
+  </style>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body class="flex bg-[#f8f9ff] dark:bg-[#121212]">
+
+<div class="app w-full h-screen dark:bg-[#121212] overflow-x-auto text-[#000081] dark:text-white flex flex-col">
+
+  <!-- ================= HEADER ================= -->
+  <header class="header fixed z-30 top-0 left-0 right-0 bg-[#000081] dark:bg-[#1f1f1f] flex items-center justify-between px-4 h-[56px]">
+    <button id="menuBtn" class="mdi-o size-10 text-2xl text-white rounded-full active:bg-[rgba(255,255,255,0.2)] mr-2 select-none touch-none">menu</button>
+    <div class="flex-1 flex flex-col text-white">
+      <h2 class="text-xl tracking-tighter small-caps text-blue-500">
+        Smart<span class="text-[red] small-caps">Mark</span>
+      </h2>
+      <p class="text-[9px]">Marking With Care.</p>
+    </div>
+    <button id="showBox" class="flex items-center gap-1 px-2 py-2 rounded-2xl text-white active:bg-[rgba(255,255,255,0.2)]">
+      <i class="mdi-r text-2xl">person_add</i>
+      <span class="text-xs">Add Pupil</span>
+    </button>
+  </header>
+
+  <!-- ================= DRAWER ================= -->
+  <aside id="drawer" class="overflow-y-scroll pb-6 fixed z-40 top-0 left-[-100%] h-screen w-[80%] max-w-[300px] bg-[rgba(0,21,60,0.8)] backdrop-blur-lg dark:bg-[#1f1f1f] transition-all duration-200">
+    <div class="h-28 px-4 flex flex-col justify-center gap-1 border-b border-white/10">
+      <div class="flex items-center gap-4">
+        <img id="drawerAvatar" src="assets/logo.webp" class="w-12 h-12 rounded-full ring-1 ring-gray-300" alt="User">
+        <div class="flex flex-col">
+          <h3 id="drawerName" class="font-semibold text-white text-sm">User Name</h3>
+          <p id="drawerEmail" class="text-[0.6rem] text-white/70">user@email.com</p>
+          <div class="flex gap-2 mt-1">
+            <span id="drawerSchool" class="text-[0.5rem] bg-white/10 px-2 py-0.5 rounded text-white">School: ---</span>
+            <span id="drawerClass" class="text-[0.5rem] bg-white/10 px-2 py-0.5 rounded text-white">Class: ---</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="drawer-menu flex flex-col gap-1 overflow-hiden text-white overflow-scroll">
+  <li data-screen="dashboard" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10 text-red-500">
+    <i class="mdi-o text-2xl">dashboard</i><span>Dashboard</span>
+  </li>
+  <li data-screen="reports" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">assessment</i><span>Reports</span>
+  </li>
+  <li data-screen="pupils" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-r text-2xl">group</i><span>Pupils</span>
+  </li>
+     <li data-screen="announcements" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">campaign</i><span>Announcements</span>
+  </li>
+  <li data-screen="about" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">info</i><span>About</span>
+  </li>
+  <li data-screen="support" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">favorite</i><span>Support</span>
+  </li>
+  <li data-screen="voiceHub" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">record_voice_over</i><span>Voice Hub</span>
+  </li>
+  <li data-screen="faq" class="screen px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">help_outline</i><span>FAQs</span>
+  </li>
+  <li id="toggleTheme" class="px-4 py-3 flex items-center gap-4 border-t border-white/10 active:bg-white/10">
+    <i class="mdi-o text-2xl">brightness_6</i><span>Dark / Light</span>
+  </li>
+  <li id="refresh" class="px-4 py-3 flex items-center gap-4 active:bg-white/10">
+    <i class="mdi-o text-2xl">refresh</i><span>Refresh</span>
+  </li>
+  <li id="logoutBtn" class="px-4 py-3 flex items-center gap-4 text-red-400 active:bg-white/10">
+    <i class="mdi text-2xl">logout</i><span>Sign Out</span>
+  </li>
+</ul>
+  </aside>
+
+  <!-- ================= ADD PUPIL MODAL ================= -->
+  <div id="addPupilWrapper" class="wrapper fixed hidden items-center justify-center z-50 inset-0 bg-black/40">
+    <div class="w-[80%] p-4 rounded shadow-lg bg-white dark:bg-[#1f1f1f] flex flex-col gap-3">
+      <p class="text-xs">Add Pupil</p>
+      <div class="flex gap-2 border px-2 py-2 rounded border-gray-300 dark:border-[#121212] relative overflow-hidden">
+        <i class="mdi-r text-gray-400 z-10 relative">person_add</i>
+        <input id="pupil-add" class="flex-1 bg-transparent focus:outline-none text-sm relative z-10" placeholder="Enter pupil name" />
+      
+      </div>
+      <div class="flex gap-3 text-white">
+        <button id="closeBox" class="flex-1 py-2 rounded bg-red-500">Cancel</button>
+        <button id="addPupil" class="flex-1 py-2 rounded bg-green-500">Add</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ================= MAIN CONTENT ================= -->
+  <main id="body" class="w-full pt-16">
+    <div class="pt-6 px-4 flex flex-col gap-4">
+      <!-- Center heading shimmer -->
+      <div class="w-[120px] h-6 mx-auto rounded-sm bg-[#f1f1f1] dark:bg-[#323232] relative overflow-hidden">
+        <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="p-4 flex-col flex gap-4 shadow-sm dark:bg-[#1f1f1f] rounded relative overflow-hidden mt-2">
+        <div class="py-2 w-[50%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+          <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+        </div>
+        <div class="py-4 w-full bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+          <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+        </div>
+      </div>
+
+      <!-- Border-top shimmer -->
+      <div class="w-full border-t border-[#ddd] dark:border-[#1f1f1f] relative overflow-hidden mt-2 rounded-t">
+        <div class="absolute rounded-t inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60 h-full"></div>
+      </div>
+
+      <!-- List shimmer: 3 items -->
+      <div class="space-y-4 mt-2">
+        <!-- List 1 -->
+        <div class="shadow-sm dark:bg-[#1f1f1f] flex flex-col gap-2 p-4 rounded relative overflow-hidden">
+          <div class="h-4 w-[60%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+            <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+          </div>
+          <div class="h-2 w-[30%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+            <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+          </div>
+          <div class="flex gap-2">
+            <div class="px-10 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+            <div class="px-6 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+            <div class="px-6 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- List 2 -->
+        <div class="shadow-sm dark:bg-[#1f1f1f] flex flex-col gap-2 p-4 rounded relative overflow-hidden">
+          <div class="h-4 w-[60%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+            <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+          </div>
+          <div class="h-2 w-[30%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+            <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+          </div>
+          <div class="flex gap-2">
+            <div class="px-10 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+            <div class="px-6 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+            <div class="px-6 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- List 3 -->
+        <div class="shadow-sm dark:bg-[#1f1f1f] flex flex-col gap-2 p-4 rounded relative overflow-hidden">
+          <div class="h-4 w-[60%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+            <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+          </div>
+          <div class="h-2 w-[30%] bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+            <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+          </div>
+          <div class="flex gap-2">
+            <div class="px-10 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+            <div class="px-6 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+            <div class="px-6 py-3 bg-[#f1f1f1] dark:bg-[#323232] rounded-sm relative overflow-hidden">
+              <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom buttons shimmer -->
+      <div class="flex gap-3 mt-2">
+        <div class="flex-1 py-6 rounded bg-[#f1f1f1] dark:bg-[#323232] relative overflow-hidden">
+          <div class="absolute inset-0 -translate-x-full animate-[v_1.5s_infinite] bg-gradient-to-r from-transparent via-gray-300/40 to-transparent dark:via-white/60"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <div class="footer mx-6 pt-4 mt-4 pb-6 border-t border-[#e0e4ff] dark:border-[#1e293b] text-center">
+    <p class="text-xs text-gray-500 dark:text-gray-400">
+      © 2025 TheGenz. All rights reserved. <br />
+      Unauthorized copying or redistribution is strictly prohibited.
+    </p>
+  </div>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script type="module" src="./main.js"></script>
+</body>
+</html>
